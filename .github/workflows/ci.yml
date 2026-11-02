@@ -1,4 +1,4 @@
-name: ci_retail_footfall_pipeline
+name: ci_dyno_predictor_cobb
 on:
   push:
     branches: [ "develop" ]
