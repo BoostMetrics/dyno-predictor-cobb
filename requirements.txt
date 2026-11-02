@@ -2,3 +2,8 @@ black
 pylint
 mypy
 pandas-stubs
+kagglehub
+pandas
+pandas-stubs
+pyarrow
+tzdata
