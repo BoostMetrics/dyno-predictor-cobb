@@ -7,3 +7,4 @@ pandas
 pandas-stubs
 pyarrow
 tzdata
+python-dotenv
