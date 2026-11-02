@@ -1,0 +1,22 @@
+# Environnement Python
+.venv/
+venv/
+Dynovenv/
+--pycache--/
+*.pyc
+
+# Notebooks
+.ipynb_checkpoints/
+sandbox/
+
+# Données (trop lourdes, et il y a des noms de personnes)
+data/
+*.csv
+*.parquet
+*.duckdb
+
+# Secrets
+.env
+
+# Éditeur
+.vscode/
