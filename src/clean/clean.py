@@ -86,13 +86,7 @@ def clean_dyno_runs(raw: pd.DataFrame) -> pd.DataFrame:
     df = df[~df["run"].isin(EXCLUDED_RUNS)]
 
     # Same (run, rpm) measured several times: average the measures
-    return df.groupby(["run", "rpm"], as_index=False).agg(
-        hp=("hp", "mean"),
-        tq=("tq", "mean"),
-        afr=("afr", "mean"),
-        boost=("boost", "mean"),
-        tec_load_ts=("tec_load_ts", "first"),
-    )
+    return df.drop_duplicates(subset=["run", "rpm"], keep="first")
 
 
 def main() -> None:
