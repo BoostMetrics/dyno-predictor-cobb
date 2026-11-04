@@ -44,6 +44,15 @@ def compute_auc(dyno_runs: pd.DataFrame) -> pd.DataFrame:
     return auc
 
 
+def build_run_summary(
+    car_info: pd.DataFrame, peaks: pd.DataFrame, auc: pd.DataFrame
+) -> pd.DataFrame:
+    """Return one row per run with peaks and AUC"""
+    car_peak = car_info.merge(peaks, on="run")
+    run_summary = car_peak.merge(auc, on="run")
+    return run_summary
+
+
 def main() -> None:
     """Import files and print shape"""
     car_info = pd.read_parquet(CLEAN_DIR / "car_info.parquet")
