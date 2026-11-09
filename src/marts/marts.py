@@ -7,9 +7,13 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
+MARTS_DIR = Path("data") / "marts"
 CLEAN_DIR = Path("data") / "clean"
 AUC_RPM_MIN = 2500
 AUC_RPM_MAX = 6000
+MIN_STOCK_RUN = 2
+MAX_STOCK_SPREAD = 0.10
+ROBUST_STOCK_RUNS = 3
 
 
 def compute_peaks(dyno_runs: pd.DataFrame) -> pd.DataFrame:
@@ -53,17 +57,42 @@ def build_run_summary(
     return run_summary
 
 
+def compute_gain_hp(run_summary: pd.DataFrame) -> pd.DataFrame:
+    """Return one row per run with stock perf"""
+    stock_engine = run_summary[run_summary["tuning_stage"] == 0]
+    stock_ref = stock_engine.groupby("vehicle_key")["hp_peak"].agg(
+        ["median", "count", "min", "max"]
+    )
+    stock_valid = stock_ref[
+        (stock_ref["count"] >= ROBUST_STOCK_RUNS)
+        | (stock_ref["count"] == MIN_STOCK_RUN)
+        & (
+            (stock_ref["max"] - stock_ref["min"]) / stock_ref["median"]
+            <= MAX_STOCK_SPREAD
+        )
+    ]
+    ref = stock_valid["median"].rename("stock_ref_hp").reset_index()
+    run_gain = run_summary.merge(ref, on="vehicle_key", how="left")
+    run_gain["gain_hp"] = run_gain["hp_peak"] - run_gain["stock_ref_hp"]
+    run_gain.loc[run_gain["tuning_stage"] == 0, "gain_hp"] = pd.NA
+
+    return run_gain
+
+
 def main() -> None:
     """Import files and print shape"""
     car_info = pd.read_parquet(CLEAN_DIR / "car_info.parquet")
     dyno_runs = pd.read_parquet(CLEAN_DIR / "dyno_runs.parquet")
     peaks = compute_peaks(dyno_runs)
     auc = compute_auc(dyno_runs)
-    print(f"Peaks: {peaks}")
-    print(f"Car_info shape: {car_info.shape}")
-    print(f"Dyno runs shape: {dyno_runs.shape}")
-    print(f"AUC shape:{auc.shape}")
-    print(f"Powerband AUC:{auc["powerband_auc"].notna().sum()}")
+    summary = build_run_summary(car_info, peaks, auc)
+    run_summary_final = compute_gain_hp(summary)
+
+    print(run_summary_final)
+
+    MARTS_DIR.mkdir(parents=True, exist_ok=True)
+    run_summary_final.to_parquet(MARTS_DIR / "run_summary.parquet", index=False)
+    print(f"run_summary: {run_summary_final.shape}")
 
 
 if __name__ == "__main__":
