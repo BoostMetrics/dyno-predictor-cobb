@@ -89,10 +89,8 @@ def main() -> None:
     run_summary_final = compute_gain_hp(summary)
 
     print(run_summary_final)
-
     MARTS_DIR.mkdir(parents=True, exist_ok=True)
     run_summary_final.to_parquet(MARTS_DIR / "run_summary.parquet", index=False)
-    print(f"run_summary: {run_summary_final.shape}")
 
 
 if __name__ == "__main__":
