@@ -1,0 +1,18 @@
+[project]
+name = "dyno-predictor-cobb"
+version = "0.1.0"
+description = "Predictor for dyno runs with parts or not"
+requires-python = ">=3.14"
+
+[tool.black]
+line-length = 88
+
+[tool.pylint.format]
+max-line-length = 88
+
+[tool.mypy]
+python_version = "3.14"
+ignore_missing_imports = true
+
+[tool.pylint.main]
+recursive = true
