@@ -32,6 +32,7 @@ def clean_car_info(raw: pd.DataFrame, salt: str) -> pd.DataFrame:
     df["vehicle_year"] = df["Car"].str.extract(r"^(\d{4})")[0].astype("Int64")
     df["vehicle_make"] = df["Car"].str.extract(r"^\d{4} (\S+)")[0]
     df["vehicle_model"] = df["Car"].str.extract(r"^\d{4} \S+ (.+)$")[0]
+    df["vehicle_model"] = df["vehicle_model"].replace({"R35": "GT-R"})
     df["vehicle_key"] = df["vehicle_year"].astype(str) + "|" + df["vehicle_model"]
     df["date_test"] = pd.to_datetime(
         df["Date"], format="%m-%d-%Y %I:%M %p", errors="coerce"
@@ -45,7 +46,8 @@ def clean_car_info(raw: pd.DataFrame, salt: str) -> pd.DataFrame:
         specs.str.extract(r"(\d{2,3})\s*oct", flags=re.IGNORECASE)[0]
     ).astype(float)
     df["is_e85"] = specs.str.contains(r"e-?85|flex", case=False)
-    df["turbo_up"] = specs.str.contains(r"gt\d{2}|evo ?3|\d{2}g\b", case=False)
+    df["turbo_up"] = specs.str.contains(r"gtx?\d{2}|evo ?3|\d{2}g\b", case=False)
+
     df["has_exhaust_up"] = specs.str.contains(
         r"catback|downpipe|turboback|header|catless|pipe", case=False
     )
@@ -55,7 +57,7 @@ def clean_car_info(raw: pd.DataFrame, salt: str) -> pd.DataFrame:
     df["tuning_stage"] = (
         specs.str.extract(r"stage\s*(\d)", flags=re.IGNORECASE)[0]
     ).astype("Int64")
-    is_stock = specs.str.strip().str.lower().str.contains(r"stock|baseline")
+    is_stock = specs.str.strip().str.lower().str.contains(r"stock")
     no_parts = ~(df["turbo_up"] | df["has_exhaust_up"] | df["has_intake_up"])
     stock_mask = (
         df["tuning_stage"].isna() & is_stock & no_parts & df["boost_target"].isna()
