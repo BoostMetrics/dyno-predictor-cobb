@@ -33,6 +33,16 @@ def clean_car_info(raw: pd.DataFrame, salt: str) -> pd.DataFrame:
     df["vehicle_make"] = df["Car"].str.extract(r"^\d{4} (\S+)")[0]
     df["vehicle_model"] = df["Car"].str.extract(r"^\d{4} \S+ (.+)$")[0]
     df["vehicle_model"] = df["vehicle_model"].replace({"R35": "GT-R"})
+    df["vehicle_model"] = df["vehicle_model"].replace(
+        {
+            "Impreza WRX STI": "WRX STI",
+            "Impreza WRX STI Hatch": "WRX STI",
+            "Impreza WRX STI Sedan": "WRX STI",
+        }
+    )
+    df["vehicle_model"] = df["vehicle_model"].replace(
+        {"EVO X GSR": "EVO X", "EVO X MR": "EVO X"}
+    )
     df["vehicle_key"] = df["vehicle_year"].astype(str) + "|" + df["vehicle_model"]
     df["date_test"] = pd.to_datetime(
         df["Date"], format="%m-%d-%Y %I:%M %p", errors="coerce"
