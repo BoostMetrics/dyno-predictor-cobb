@@ -12,8 +12,10 @@ sandbox/
 # Données (trop lourdes, et il y a des noms de personnes)
 data/
 *.csv
+!reference/*.csv
 *.parquet
 *.duckdb
+
 
 # Secrets
 .env
