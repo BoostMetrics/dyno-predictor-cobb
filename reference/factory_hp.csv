@@ -1,1 +1,25 @@
- 
+vehicle_model,year_from,year_to,factory_hp,factory_tq_nm,source
+WRX STI,2004,2016,305,393,https://www.caranddriver.com/features/a15106637/2015-subaru-wrx-sti-vs-2004-subaru-impreza-wrx-sti-feature/
+WRX,2002,2008,224,300,https://fastestlaps.com/models/subaru-impreza-wrx-2-0
+WRX,2009,2016,265,331,https://fastestlaps.com/models/subaru-impreza-wrx-2009
+EVO X , 2008, 2015, 295, 355, https://fastestlaps.com/models/mitsubishi-lancer-evo-x-mr
+GT-R,2009,2011,485,588,https://cdn-fastly.autoguide.com/auto-news/2014/03/nissan-gt-r-years.html
+GT-R,2012,2015,545,628,https://cdn-fastly.autoguide.com/auto-news/2014/03/nissan-gt-r-years.html
+Mazdaspeed3, 2007, 2013, 263, 380, https://news.mazdausa.com/download/2010-MAZDASPEED3-one-sheet_FINAL.pdf
+Legacy 2.5GT,2005,2009,250,339,https://www.cars.com/research/subaru-legacy-2005/specs/266038
+Legacy 2.5GT,2010,2012,265,350,https://www.auto123.com/en/car-reviews/2010-subaru-legacy-25gt-review/31777/
+Forester,2004,2005,210,319,https://www.cars.com/research/subaru-forester-2004/specs/128045
+Forester,2006,2013,224,306,https://www.kbb.com/subaru/forester/2009/specs
+Forester,2014,2016,250,350,https://www.auto123.com/en/car-reviews/2014-subaru-forester-20xt-limited/47597/
+335i,2007,2015,300,407,https://www.motorweek.org/reviews/road_tests/2007_bmw_335i
+135i,2008,2012,300,407,https://www.cars.com/research/bmw-135-2008/specs/297405
+Impreza RS,1993,2005,165,225,https://www.cars.com/research/subaru-impreza-2005/specs/266622/
+Focus ST,2013,2015,252,366,https://www.wardsauto.com/news/archive-wards-focus-st-proves-ford-can-compete-with-best/781112/
+Legacy 2.5 spec.B,2007,2009,243,327,https://www.edmunds.com/subaru/legacy/2008/st-100867926/features-specs
+Lancer Ralliart,2009,2014,237,343,https://media.mitsubishicars.com/en-US/releases/release-d9088eacd3da21cfda318e524b06fc7e-2009-mitsubishi-lancer-ralliart-powered-by-new-version-of-4b11-tc-turbo-intercooled-engine-that-debuted-in-lancer-evolution
+Fiesta ST,2014,2016,197,274,https://wardsauto.com/test-drives-new-vehicles/fiesta-st-strikes-balance-between-power-handling
+Outback XT,2005,2009,250,339,https://www.cars.com/research/subaru-outback-2005/specs/266051/
+GTI,2012,2014,200,281,https://www.edmunds.com/volkswagen/gti/2012/st-101394438/features-specs/
+GTI,2015,2016,210,350,https://thetruthaboutcars.com/2015/05/2015-volkswagen-gti-2-door-review-video/
+350Z,2003,2005,287,371,https://www.carwhere.com/nissan/engines/vq
+350Z,2006,2008,306,363,https://www.carwhere.com/nissan/engines/vq

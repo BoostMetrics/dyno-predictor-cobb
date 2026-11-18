@@ -16,6 +16,17 @@ CLEAN_DIR = Path("data") / "clean"
 
 # Run 5933: 4936 points vs 140-330 for a normal run (atypical recording).
 EXCLUDED_RUNS = [5933]
+CAR_RENAME = {
+    "R35": "GT-R",
+    "Impreza WRX": "WRX",
+    "Impreza WRX STI": "WRX STI",
+    "Impreza WRX STI Hatch": "WRX STI",
+    "Impreza WRX STI Sedan": "WRX STI",
+    "Forester XT": "Forester",
+    "EVO X SE": "EVO X",
+    "EVO X GSR": "EVO X",
+    "EVO X MR": "EVO X",
+}
 
 
 def anonymize(name: str, salt: str) -> str:
@@ -32,17 +43,7 @@ def clean_car_info(raw: pd.DataFrame, salt: str) -> pd.DataFrame:
     df["vehicle_year"] = df["Car"].str.extract(r"^(\d{4})")[0].astype("Int64")
     df["vehicle_make"] = df["Car"].str.extract(r"^\d{4} (\S+)")[0]
     df["vehicle_model"] = df["Car"].str.extract(r"^\d{4} \S+ (.+)$")[0]
-    df["vehicle_model"] = df["vehicle_model"].replace({"R35": "GT-R"})
-    df["vehicle_model"] = df["vehicle_model"].replace(
-        {
-            "Impreza WRX STI": "WRX STI",
-            "Impreza WRX STI Hatch": "WRX STI",
-            "Impreza WRX STI Sedan": "WRX STI",
-        }
-    )
-    df["vehicle_model"] = df["vehicle_model"].replace(
-        {"EVO X GSR": "EVO X", "EVO X MR": "EVO X"}
-    )
+    df["vehicle_model"] = df["vehicle_model"].replace(CAR_RENAME)
     df["vehicle_key"] = df["vehicle_year"].astype(str) + "|" + df["vehicle_model"]
     df["date_test"] = pd.to_datetime(
         df["Date"], format="%m-%d-%Y %I:%M %p", errors="coerce"
