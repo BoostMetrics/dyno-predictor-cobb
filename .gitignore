@@ -2,7 +2,7 @@
 .venv/
 venv/
 Dynovenv/
---pycache--/
+__pycache__/
 *.pyc
 
 # Notebooks
