@@ -9,6 +9,7 @@ import numpy as np
 
 MARTS_DIR = Path("data") / "marts"
 CLEAN_DIR = Path("data") / "clean"
+FACTORY_SPECS_PATH = Path("reference") / "factory_hp.csv"
 AUC_RPM_MIN = 2500
 AUC_RPM_MAX = 6000
 MIN_STOCK_RUN = 2
@@ -79,6 +80,22 @@ def compute_gain_hp(run_summary: pd.DataFrame) -> pd.DataFrame:
     return run_gain
 
 
+def add_factory_hp(run_summary: pd.DataFrame) -> pd.DataFrame:
+    """Add factory_hp and factory_tq_nm"""
+    factory_hp = pd.read_csv(FACTORY_SPECS_PATH)
+    run_hp_sum = run_summary.merge(factory_hp, on="vehicle_model")
+    factory_match = run_hp_sum[
+        (run_hp_sum["vehicle_year"] >= run_hp_sum["year_from"])
+        & (run_hp_sum["vehicle_year"] <= run_hp_sum["year_to"])
+    ]
+
+    run_table = run_summary.merge(
+        factory_match[["run", "factory_hp", "factory_tq_nm"]], how="left", on="run"
+    )
+
+    return run_table
+
+
 def main() -> None:
     """Import files and print shape"""
     car_info = pd.read_parquet(CLEAN_DIR / "car_info.parquet")
@@ -87,6 +104,7 @@ def main() -> None:
     auc = compute_auc(dyno_runs)
     summary = build_run_summary(car_info, peaks, auc)
     run_summary_final = compute_gain_hp(summary)
+    run_summary_final = add_factory_hp(run_summary_final)
 
     print(run_summary_final)
     MARTS_DIR.mkdir(parents=True, exist_ok=True)
