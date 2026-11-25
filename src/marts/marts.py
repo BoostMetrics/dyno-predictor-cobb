@@ -53,8 +53,8 @@ def build_run_summary(
     car_info: pd.DataFrame, peaks: pd.DataFrame, auc: pd.DataFrame
 ) -> pd.DataFrame:
     """Return one row per run with peaks and AUC"""
-    car_peak = car_info.merge(peaks, on="run")
-    run_summary = car_peak.merge(auc, on="run")
+    car_peak = car_info.merge(peaks, on="run", how="left", validate="one_to_one")
+    run_summary = car_peak.merge(auc, on="run", how="left", validate="one_to_one")
     return run_summary
 
 
@@ -73,7 +73,9 @@ def compute_gain_hp(run_summary: pd.DataFrame) -> pd.DataFrame:
         )
     ]
     ref = stock_valid["median"].rename("stock_ref_hp").reset_index()
-    run_gain = run_summary.merge(ref, on="vehicle_key", how="left")
+    run_gain = run_summary.merge(
+        ref, on="vehicle_key", how="left", validate="many_to_one"
+    )
     run_gain["gain_hp"] = run_gain["hp_peak"] - run_gain["stock_ref_hp"]
     run_gain.loc[run_gain["tuning_stage"] == 0, "gain_hp"] = pd.NA
 
@@ -90,7 +92,10 @@ def add_factory_hp(run_summary: pd.DataFrame) -> pd.DataFrame:
     ]
 
     run_table = run_summary.merge(
-        factory_match[["run", "factory_hp", "factory_tq_nm"]], how="left", on="run"
+        factory_match[["run", "factory_hp", "factory_tq_nm"]],
+        how="left",
+        on="run",
+        validate="one_to_one",
     )
 
     return run_table

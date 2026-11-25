@@ -98,7 +98,7 @@ def clean_dyno_runs(raw: pd.DataFrame) -> pd.DataFrame:
     )
     df = df[~df["run"].isin(EXCLUDED_RUNS)]
 
-    # Same (run, rpm) measured several times: average the measures
+    # Same (run, rpm) measured several times: keep the first measure
     return df.drop_duplicates(subset=["run", "rpm"], keep="first")
 
 
